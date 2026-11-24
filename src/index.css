@@ -1,0 +1,220 @@
+/*
+ * Estilos globales de FinTrack.
+ * Los colores de superficie se definen como variables RGB (abajo) para que Tailwind pueda aplicarles
+ * opacidad (`bg-superficie/90`); el tema oscuro solo cambia esas variables bajo `:root.dark`.
+ * El resto del diseño vive en las clases de Tailwind de cada componente (`tailwind.config.js`).
+ */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color-scheme: light;
+  -webkit-tap-highlight-color: transparent;
+  /* Superficies (RGB para que Tailwind pueda aplicar opacidad). */
+  --suelo: 246 245 251;
+  --superficie: 255 255 255;
+  --elevada: 248 247 252;
+  --linea: 232 230 240;
+  --tinta: 27 32 64;
+  --tenue: 92 96 112;
+  /* Curvas de animación: salidas firmes; nunca ease-in en la interfaz (se siente lenta). */
+  --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+  --ease-in-out: cubic-bezier(0.77, 0, 0.175, 1);
+  --ease-drawer: cubic-bezier(0.32, 0.72, 0, 1);
+}
+/* Lo mínimo para que en el celular se sienta como app instalada y no como página web. */
+html {
+  -webkit-text-size-adjust: 100%;
+  overscroll-behavior: none;
+}
+/* Sin scroll lateral nunca: en el celular un elemento desbordado arrastraba la página y escondía la barra inferior. */
+body {
+  overflow-x: clip;
+}
+input,
+textarea,
+select {
+  font-size: 16px; /* menos de 16px hace que iOS haga zoom al enfocar */
+}
+button,
+a,
+[role='button'],
+[role='tab'],
+[role='option'],
+label {
+  touch-action: manipulation; /* sin el retraso de 300ms del doble toque */
+}
+button,
+[role='button'],
+[role='tab'],
+[role='option'],
+nav a {
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-touch-callout: none;
+}
+/* Dentro del APK: la interfaz no se selecciona como texto al mantener presionado (sí los campos). */
+.nativo body {
+  -webkit-user-select: none;
+  user-select: none;
+}
+.nativo input,
+.nativo textarea,
+.nativo [contenteditable='true'] {
+  -webkit-user-select: text;
+  user-select: text;
+}
+.desplazable {
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+/* Presión inmediata en todo lo tocable (feedback al bajar el dedo, no al soltar). */
+.tocable {
+  transition: transform 120ms var(--ease-out), background-color 150ms ease, box-shadow 150ms ease;
+}
+.tocable:active {
+  transform: scale(0.97);
+}
+::selection {
+  background: #d5d1ff;
+  color: #1b2040;
+}
+/* :where() deja la especificidad en 0: los campos con outline-none (que usan su propio anillo) no la heredan. */
+:where(:focus-visible) {
+  outline: 2px solid #6338ee;
+  outline-offset: 2px;
+}
+
+/* Círculo de ícono de categoría: tinte pálido con el ícono en el tono de la categoría. */
+.baldosa {
+  background: var(--b-tinte);
+  color: var(--b-dato);
+}
+:root.dark .baldosa {
+  background: color-mix(in srgb, var(--b-dato) 24%, #1b2040);
+  color: var(--b-tinte);
+}
+.num {
+  font-variant-numeric: tabular-nums;
+}
+
+/* "+2 pts" que viaja desde la acción hasta el marcador del FinScore. */
+.ft-puntos-vuelo {
+  position: fixed;
+  z-index: 71;
+  pointer-events: none;
+  padding: 4px 10px;
+  border-radius: 999px;
+  background: #22c39a;
+  color: #fff;
+  font: 800 13px/1.2 'Plus Jakarta Sans Variable', 'Plus Jakarta Sans', system-ui, sans-serif;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+  box-shadow: 0 6px 16px -6px rgba(19, 158, 124, 0.6);
+}
+
+/* Landing: los chips que acompañan al celular 3D flotan despacio, cada uno con su propio retraso. */
+@keyframes ft-flota {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-8px); }
+}
+.ft-flota {
+  animation: ft-flota 5.5s ease-in-out infinite;
+}
+@media (prefers-reduced-motion: reduce) {
+  .ft-flota {
+    animation: none;
+  }
+}
+
+/* Entrada de modales y avisos (al montar, sin JS). */
+.ft-entra {
+  transition: opacity 220ms var(--ease-out), transform 220ms var(--ease-out);
+}
+.ft-fondo {
+  transition: opacity 200ms ease;
+}
+@starting-style {
+  .ft-entra {
+    opacity: 0;
+    transform: translateY(8px) scale(0.97);
+  }
+  .ft-fondo {
+    opacity: 0;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .ft-entra {
+    transition: opacity 200ms ease;
+    transform: none;
+  }
+}
+:root.dark {
+  color-scheme: dark;
+  /* Tema oscuro: el azul noche de la marca, con las tarjetas un paso más claras. */
+  --suelo: 18 21 44;
+  --superficie: 27 32 64;
+  --elevada: 36 42 80;
+  --linea: 49 56 100;
+  --tinta: 255 255 255;
+  --tenue: 176 182 214;
+}
+html,
+body {
+  background: rgb(var(--suelo));
+}
+body {
+  font-family: 'Plus Jakarta Sans Variable', 'Plus Jakarta Sans', system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+.num {
+  font-variant-numeric: tabular-nums;
+}
+.recharts-tooltip-wrapper:focus,
+.recharts-wrapper:focus,
+.recharts-surface:focus {
+  outline: none;
+}
+
+/* Recharts mide el texto con un span oculto a la izquierda de la página; lo sacamos de la pantalla. */
+#recharts_measurement_span {
+  margin-left: -200vw !important;
+}
+
+/* Barras de desplazamiento con la paleta de la app (lo que dibuja el navegador también lleva el diseño). */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: rgb(var(--linea)) transparent;
+}
+
+/* FinScore: la tarjeta de puntaje está viva (la gamificación se siente). Solo transform y opacity:
+   corren en la GPU sin recalcular el diseño. Con "reducir movimiento" quedan quietas. */
+@keyframes ft-deriva-a {
+  0%, 100% { transform: translate3d(0, 0, 0) scale(1); }
+  50% { transform: translate3d(34px, 22px, 0) scale(1.15); }
+}
+@keyframes ft-deriva-b {
+  0%, 100% { transform: translate3d(0, 0, 0) scale(1.08); }
+  50% { transform: translate3d(-30px, -18px, 0) scale(0.9); }
+}
+@keyframes ft-titila {
+  0%, 100% { opacity: 0.12; transform: scale(0.55) rotate(0deg); }
+  50% { opacity: 0.95; transform: scale(1) rotate(30deg); }
+}
+@keyframes ft-llama {
+  0%, 100% { transform: scale(1) rotate(-4deg); }
+  50% { transform: scale(1.14) rotate(5deg); }
+}
+@keyframes ft-barrido {
+  0%, 70% { transform: translateX(-130%) skewX(-18deg); }
+  100% { transform: translateX(330%) skewX(-18deg); }
+}
+.ft-deriva-a { animation: ft-deriva-a 11s ease-in-out infinite; will-change: transform; }
+.ft-deriva-b { animation: ft-deriva-b 13s ease-in-out infinite; will-change: transform; }
+.ft-titila { animation: ft-titila 3.2s ease-in-out infinite; }
+.ft-llama { animation: ft-llama 1.6s ease-in-out infinite; transform-origin: 50% 85%; }
+.ft-barrido { animation: ft-barrido 7s cubic-bezier(0.45, 0, 0.2, 1) infinite; }
+@media (prefers-reduced-motion: reduce) {
+  .ft-deriva-a, .ft-deriva-b, .ft-titila, .ft-llama, .ft-barrido { animation: none; }
+}

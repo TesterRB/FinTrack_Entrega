@@ -1,0 +1,22 @@
+# El plan gratuito de Supabase pausa los proyectos tras 7 días sin actividad.
+# Esta consulta liviana cada 3 días lo mantiene despierto aunque los probadores no abran la app.
+# Requiere los secretos SUPABASE_URL y SUPABASE_ANON_KEY (Settings → Secrets and variables → Actions).
+name: Mantener Supabase activo
+
+on:
+  schedule:
+    - cron: '17 13 */3 * *'
+  workflow_dispatch:
+
+jobs:
+  ping:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Consultar la versión publicada
+        env:
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_ANON_KEY: ${{ secrets.SUPABASE_ANON_KEY }}
+        run: |
+          curl --fail --silent --show-error \
+            "$SUPABASE_URL/rest/v1/version_app?select=codigo&plataforma=eq.android" \
+            -H "apikey: $SUPABASE_ANON_KEY"

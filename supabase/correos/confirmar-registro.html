@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light">
+  <title>Confirma tu correo</title>
+</head>
+<body style="margin:0;padding:0;background:#f6f5fb;">
+  <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:#f6f5fb;padding:32px 16px;">
+    <tr>
+      <td align="center">
+        <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="max-width:480px;background:#ffffff;border-radius:24px;font-family:-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;color:#1b2040;">
+          <tr>
+            <td style="padding:32px 32px 8px;">
+              <table role="presentation" cellpadding="0" cellspacing="0">
+                <tr>
+                  <td width="36" height="36" align="center" style="background:#6338ee;border-radius:10px;color:#ffffff;font-size:18px;font-weight:800;">F</td>
+                  <td style="padding-left:10px;font-size:20px;font-weight:800;letter-spacing:-0.5px;color:#1b2040;">FinTrack</td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+          <tr>
+            <td style="padding:24px 32px 0;">
+              <h1 style="margin:0;font-size:24px;line-height:1.25;font-weight:800;color:#1b2040;">Confirma tu correo</h1>
+              <p style="margin:12px 0 0;font-size:16px;line-height:1.55;color:#5c6070;">Hola, ya casi está tu cuenta de FinTrack. Confirma que <strong style="color:#1b2040;">{{ .Email }}</strong> es tu correo para empezar a registrar tus gastos.</p>
+            </td>
+          </tr>
+          <tr>
+            <td style="padding:28px 32px 8px;">
+              <table role="presentation" cellpadding="0" cellspacing="0" width="100%">
+                <tr>
+                  <td align="center" style="background:#6338ee;border-radius:999px;">
+                    <a href="{{ .ConfirmationURL }}" style="display:block;padding:15px 24px;font-size:16px;font-weight:700;color:#ffffff;text-decoration:none;">Confirmar mi correo</a>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+          <tr>
+            <td style="padding:16px 32px 0;">
+              <p style="margin:0;font-size:14px;line-height:1.5;color:#5c6070;">Ábrelo desde el celular donde instalaste FinTrack y entrarás directo. Si lo abres en otro dispositivo, tu cuenta igual queda confirmada: vuelve a la app e inicia sesión.<br><br>Si no creaste esta cuenta, ignora este correo.</p>
+            </td>
+          </tr>
+          <tr>
+            <td style="padding:20px 32px 32px;">
+              <p style="margin:0;font-size:12px;line-height:1.5;color:#8a8fa3;">¿El botón no funciona? Copia este enlace en el navegador del celular:<br>
+                <a href="{{ .ConfirmationURL }}" style="color:#6338ee;word-break:break-all;">{{ .ConfirmationURL }}</a></p>
+            </td>
+          </tr>
+        </table>
+        <p style="margin:20px 0 0;font-family:-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;font-size:12px;color:#8a8fa3;">FinTrack · beta privada · finanzas personales para Colombia</p>
+      </td>
+    </tr>
+  </table>
+</body>
+</html>

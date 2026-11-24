@@ -1,0 +1,22 @@
+# Verifica en cada push que el código pase el lint, que las pruebas del motor pasen y que la app compile.
+name: Verificación
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  web:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npm run lint
+      - run: npm test
+      # Sin variables de Supabase compila en modo demo: solo se valida que el código esté sano.
+      - run: npm run build

@@ -1,0 +1,35 @@
+# ─── Dependencias y builds ─────────────────────────────────────────────
+node_modules
+dist
+
+# ─── Variables de entorno ──────────────────────────────────────────────
+# Solo se sube la plantilla (.env.example). Los valores reales viven en .env.local.
+*.local
+.env
+.env.*
+!.env.example
+
+# ─── Android (Capacitor) ───────────────────────────────────────────────
+# Build nativo y copia de la web que genera `npx cap sync`.
+android/app/build
+android/app/src/main/assets/public
+# Firma del APK: no se versiona.
+android/keystore.properties
+android/keystore/
+*.keystore
+*.jks
+# APKs firmados que genera `npm run android:apk`.
+release/
+
+# ─── Supabase CLI ──────────────────────────────────────────────────────
+supabase/.temp/
+supabase/.branches/
+
+# ─── Sistema, editores y registros ─────────────────────────────────────
+.DS_Store
+Thumbs.db
+logs
+*.log
+coverage
+# Capturas que generan las herramientas de revisión de diseño.
+.taste-skill
